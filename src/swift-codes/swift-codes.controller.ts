@@ -1,18 +1,9 @@
-import {
-  Body,
-  Controller,
-  Get,
-  NotFoundException,
-  Param,
-  Post,
-} from '@nestjs/common';
-import {
-  BranchSwiftCodeCreateDto,
-  BranchSwiftCodeResponseDto,
-} from './dto/branch-swift-code.dto';
+import { Body, Controller, Get, NotFoundException, Param, Post } from '@nestjs/common';
+import { BranchSwiftCodeCreateDto, BranchSwiftCodeResponseDto } from './dto/branch-swift-code.dto';
 import { SwiftCodesService } from './swift-codes.service';
 import { plainToInstance } from 'class-transformer';
 import { HeadquarterSwiftCodeResponseDto } from './dto/headquarter-swift-code.dto';
+import { CountrySwiftCodesDto } from './dto/country-swift-codes.dto';
 
 @Controller('swift-codes')
 export class SwiftCodesController {
@@ -22,20 +13,25 @@ export class SwiftCodesController {
   async findOne(
     @Param('swiftCode') swiftCode: string,
   ): Promise<BranchSwiftCodeResponseDto | HeadquarterSwiftCodeResponseDto> {
-    const foundSwiftCode = await this.swiftCodesService.getSwiftCode(swiftCode);
-    if (!foundSwiftCode)
-      throw new NotFoundException(`Swift code ${swiftCode} not found.`);
+    const foundSwiftCode = await this.swiftCodesService.getSwiftCodeByCode(swiftCode);
+    if (!foundSwiftCode) throw new NotFoundException(`Swift code ${swiftCode} not found.`);
     if (!foundSwiftCode.isHeadquarter)
       return plainToInstance(BranchSwiftCodeResponseDto, foundSwiftCode);
     return plainToInstance(HeadquarterSwiftCodeResponseDto, foundSwiftCode);
   }
 
+  @Get('country/:countryISO2code')
+  async findAll(@Param('countryISO2code') countryISO2code: string) {
+    const foundSwiftCodes =
+      await this.swiftCodesService.getSwiftCodesByCountryCode(countryISO2code);
+    if (!foundSwiftCodes)
+      throw new NotFoundException(`Swift codes with ${countryISO2code} code not found.`);
+    return plainToInstance(CountrySwiftCodesDto, foundSwiftCodes);
+  }
+
   @Post()
-  async add(
-    @Body() swiftCodeDto: BranchSwiftCodeCreateDto,
-  ): Promise<BranchSwiftCodeResponseDto> {
-    const createdSwiftCode =
-      await this.swiftCodesService.createSwiftCode(swiftCodeDto);
+  async add(@Body() swiftCodeDto: BranchSwiftCodeCreateDto): Promise<BranchSwiftCodeResponseDto> {
+    const createdSwiftCode = await this.swiftCodesService.createSwiftCode(swiftCodeDto);
     return plainToInstance(BranchSwiftCodeResponseDto, createdSwiftCode);
   }
 }
