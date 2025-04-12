@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { BranchSwiftCodeCreateDto } from './dto/branch-swift-code.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { SwiftCode } from './swift-codes.schema';
-import { Model } from 'mongoose';
+import { DeleteResult, Model } from 'mongoose';
 import {
   IBranchSwiftCode,
   ICountrySwiftCodes,
@@ -44,6 +44,10 @@ export class SwiftCodesService {
   public async createSwiftCode(swiftCodeDto: BranchSwiftCodeCreateDto): Promise<IBranchSwiftCode> {
     const swiftCode = new this.swiftCodeModel(swiftCodeDto);
     return swiftCode.save();
+  }
+
+  public async deleteSwiftCode(swiftCode: string): Promise<DeleteResult> {
+    return this.swiftCodeModel.deleteOne({ swiftCode });
   }
 
   private async getHeadquarterSwiftCode(swiftCode: SwiftCode): Promise<IHeadquarterSwiftCode> {
