@@ -1,4 +1,4 @@
-export interface BasicSwiftCode {
+export interface IBaseSwiftCode {
   address: string;
   bankName: string;
   countryISO2: string;
@@ -6,16 +6,16 @@ export interface BasicSwiftCode {
   swiftCode: string;
 }
 
-export interface BranchSwiftCode extends BasicSwiftCode {
+export interface IBranchSwiftCode extends IBaseSwiftCode {
   countryName: string;
 }
 
-export interface HeadquarterSwiftCode extends BranchSwiftCode {
-  branches: BasicSwiftCode[];
+export interface IHeadquarterSwiftCode extends IBranchSwiftCode {
+  branches: IBaseSwiftCode[];
 }
 
-export interface CountrySwiftCodesResponse {
+export interface ICountrySwiftCodes {
   countryISO2: string;
   countryName: string;
-  swiftCodes: BasicSwiftCode[];
+  swiftCodes: IBaseSwiftCode[];
 }
