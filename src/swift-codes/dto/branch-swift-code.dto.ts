@@ -1,6 +1,7 @@
 import { IBranchSwiftCode } from '../swift-codes.interface';
 import { IsString, IsISO31661Alpha2, IsBoolean } from 'class-validator';
 import { Exclude, Expose } from 'class-transformer';
+import { BaseSwiftCodeResponseDto } from './base-swift-code.dto';
 
 export class BranchSwiftCodeCreateDto implements IBranchSwiftCode {
   @IsString()
@@ -23,22 +24,10 @@ export class BranchSwiftCodeCreateDto implements IBranchSwiftCode {
 }
 
 @Exclude()
-export class BranchSwiftCodeResponseDto implements IBranchSwiftCode {
-  @Expose()
-  address: string;
-
-  @Expose()
-  bankName: string;
-
-  @Expose()
-  countryISO2: string;
-
+export class BranchSwiftCodeResponseDto
+  extends BaseSwiftCodeResponseDto
+  implements IBranchSwiftCode
+{
   @Expose()
   countryName: string;
-
-  @Expose()
-  isHeadquarter: boolean;
-
-  @Expose()
-  swiftCode: string;
 }
