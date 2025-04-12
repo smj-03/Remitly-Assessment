@@ -3,8 +3,8 @@ import { BranchSwiftCodeCreateDto, BranchSwiftCodeResponseDto } from './dto/bran
 import { SwiftCodesService } from './swift-codes.service';
 import { plainToInstance } from 'class-transformer';
 import { HeadquarterSwiftCodeResponseDto } from './dto/headquarter-swift-code.dto';
-import { CountrySwiftCodesDto } from './dto/country-swift-codes.dto';
-import { MessageDto } from './dto/message.dto';
+import { CountrySwiftCodesResponseDto } from './dto/country-swift-codes.dto';
+import { MessageResponseDto } from './dto/message.dto';
 
 @Controller('swift-codes')
 export class SwiftCodesController {
@@ -27,13 +27,13 @@ export class SwiftCodesController {
       await this.swiftCodesService.getSwiftCodesByCountryCode(countryISO2code);
     if (!foundSwiftCodes)
       throw new NotFoundException(`Swift codes with ${countryISO2code} code not found.`);
-    return plainToInstance(CountrySwiftCodesDto, foundSwiftCodes);
+    return plainToInstance(CountrySwiftCodesResponseDto, foundSwiftCodes);
   }
 
   @Post()
-  async add(@Body() swiftCodeDto: BranchSwiftCodeCreateDto): Promise<MessageDto> {
+  async add(@Body() swiftCodeDto: BranchSwiftCodeCreateDto): Promise<MessageResponseDto> {
     await this.swiftCodesService.createSwiftCode(swiftCodeDto);
-    return plainToInstance(MessageDto, {
+    return plainToInstance(MessageResponseDto, {
       message: `Successfully added swift code ${swiftCodeDto.swiftCode}.`,
     });
   }
@@ -43,7 +43,7 @@ export class SwiftCodesController {
     const deleteResult = await this.swiftCodesService.deleteSwiftCode(swiftCode);
     if (deleteResult.deletedCount === 0)
       throw new NotFoundException(`Swift code ${swiftCode} not found.`);
-    return plainToInstance(MessageDto, {
+    return plainToInstance(MessageResponseDto, {
       message: `Successfully deleted swift code ${swiftCode}.`,
     });
   }

@@ -1,7 +1,7 @@
 import { Expose } from 'class-transformer';
 
 @Expose()
-export class MessageDto {
+export class MessageResponseDto {
   @Expose()
   message: string;
 }

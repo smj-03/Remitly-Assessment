@@ -3,7 +3,7 @@ import { Exclude, Expose, Type } from 'class-transformer';
 import { BaseSwiftCodeResponseDto } from './base-swift-code.dto';
 
 @Exclude()
-export class CountrySwiftCodesDto implements ICountrySwiftCodes {
+export class CountrySwiftCodesResponseDto implements ICountrySwiftCodes {
   @Expose()
   countryISO2: string;
 
