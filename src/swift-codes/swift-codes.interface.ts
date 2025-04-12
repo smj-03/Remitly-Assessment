@@ -2,7 +2,7 @@ export interface BasicSwiftCode {
   address: string;
   bankName: string;
   countryISO2: string;
-  isHeadquarter: boolean;
+  isHeadquarter?: boolean;
   swiftCode: string;
 }
 
