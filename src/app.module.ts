@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
-import { SwiftParserService } from './swift-parser/swift-parser.service';
-import { SwiftCodesController } from './swift-codes/swift-codes.controller';
-import { SwiftCodesService } from './swift-codes/swift-codes.service';
 import { MongooseModule } from '@nestjs/mongoose';
+import { SwiftCodesModule } from './swift-codes/swift-codes.module';
 
 @Module({
-  imports: [MongooseModule.forRoot('mongodb://localhost:27017')],
-  controllers: [SwiftCodesController],
-  providers: [SwiftParserService, SwiftCodesService],
+  imports: [
+    MongooseModule.forRoot('mongodb://localhost:27017'),
+    SwiftCodesModule,
+  ],
 })
 export class AppModule {}

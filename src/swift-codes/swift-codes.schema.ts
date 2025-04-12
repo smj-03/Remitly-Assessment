@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { Document } from 'mongoose';
 
-import { ISwiftCode } from '../swift-codes/swift-codes.interface';
+import { IBranchSwiftCode } from '../swift-codes/swift-codes.interface';
 
 @Schema()
-export class SwiftCode implements ISwiftCode {
+export class SwiftCode extends Document implements IBranchSwiftCode {
   @Prop({ required: true })
   address: string;
 
@@ -23,7 +23,5 @@ export class SwiftCode implements ISwiftCode {
   @Prop({ type: String, uppercase: true, required: true })
   countryName: string;
 }
-
-export type SwiftCodeDocument = HydratedDocument<SwiftCode>;
 
 export const SwiftCodeSchema = SchemaFactory.createForClass(SwiftCode);
