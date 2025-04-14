@@ -30,15 +30,6 @@ export class SwiftCodesService {
 
     const { countryName, countryISO2 } = foundSwiftCodes[0];
     return { countryName, countryISO2, swiftCodes: foundSwiftCodes };
-
-    // const promises = foundSwiftCodes.map(
-    //   async (swiftCode: SwiftCode): Promise<IBranchSwiftCode | IHeadquarterSwiftCode> => {
-    //     if (!swiftCode.isHeadquarter) return swiftCode;
-    //     return await this.getHeadquarterSwiftCode(swiftCode);
-    //   },
-    // );
-    // const swiftCodes = await Promise.all(promises);
-    // const { countryName, countryISO2 } = swiftCodes[0];
   }
 
   public async createSwiftCode(swiftCodeDto: BranchSwiftCodeCreateDto): Promise<IBranchSwiftCode> {
