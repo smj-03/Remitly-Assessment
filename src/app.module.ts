@@ -4,9 +4,11 @@ import { InitializationModule } from './initialization/initialization.module';
 import { SwiftParserModule } from './swift-parser/swift-parser.module';
 import { SwiftCodesModule } from './swift-codes/swift-codes.module';
 
+import 'dotenv/config';
+
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://mongodb:27017/swift_codes_db'),
+    MongooseModule.forRoot(process.env.MONGODB_URI ?? 'mongodb://localhost:27017/swift_codes_db'),
     InitializationModule,
     SwiftParserModule,
     SwiftCodesModule,
