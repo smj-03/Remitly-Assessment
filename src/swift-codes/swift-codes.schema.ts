@@ -5,19 +5,19 @@ import { IBranchSwiftCode } from '../swift-codes/swift-codes.interface';
 
 @Schema()
 export class SwiftCode extends Document implements IBranchSwiftCode {
-  @Prop({ required: true })
+  @Prop({ type: String, required: false, trim: true, default: '' })
   address: string;
 
-  @Prop({ required: true })
+  @Prop({ type: String, required: true })
   bankName: string;
 
   @Prop({ type: String, uppercase: true, required: true })
   countryISO2: string;
 
-  @Prop({ required: true })
+  @Prop({ type: Boolean, required: true })
   isHeadquarter: boolean;
 
-  @Prop({ required: true })
+  @Prop({ type: String, required: true })
   swiftCode: string;
 
   @Prop({ type: String, uppercase: true, required: true })
