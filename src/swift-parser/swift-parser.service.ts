@@ -9,7 +9,7 @@ export class SwiftParserService {
   public parseSwiftFromCsv(path: string): ICSVSwiftCode[] {
     const fileContent = fs.readFileSync(path, { encoding: 'utf-8' });
 
-    const headers: string[] = [
+    const headers: (keyof ICSVSwiftCode)[] = [
       'countryISO2',
       'swiftCode',
       'codeType',

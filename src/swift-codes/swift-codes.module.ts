@@ -5,11 +5,7 @@ import { SwiftCodesController } from './swift-codes.controller';
 import { SwiftCodesService } from './swift-codes.service';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([
-      { name: SwiftCode.name, schema: SwiftCodeSchema },
-    ]),
-  ],
+  imports: [MongooseModule.forFeature([{ name: SwiftCode.name, schema: SwiftCodeSchema }])],
   controllers: [SwiftCodesController],
   providers: [SwiftCodesService],
 })
