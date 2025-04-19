@@ -33,8 +33,7 @@ export class SwiftCodesService {
   }
 
   public async createSwiftCode(swiftCodeDto: BranchSwiftCodeCreateDto): Promise<IBranchSwiftCode> {
-    const swiftCode = new this.swiftCodeModel(swiftCodeDto);
-    return swiftCode.save();
+    return this.swiftCodeModel.create(swiftCodeDto);
   }
 
   public async deleteSwiftCode(swiftCode: string): Promise<DeleteResult> {
