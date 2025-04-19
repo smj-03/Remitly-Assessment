@@ -11,7 +11,7 @@ export class SwiftCodesController {
   constructor(private readonly swiftCodesService: SwiftCodesService) {}
 
   @Get(':swiftCode')
-  async findOne(
+  async findOneByCode(
     @Param('swiftCode') swiftCode: string,
   ): Promise<BranchSwiftCodeResponseDto | HeadquarterSwiftCodeResponseDto> {
     const foundSwiftCode = await this.swiftCodesService.getSwiftCodeByCode(swiftCode);
@@ -22,7 +22,7 @@ export class SwiftCodesController {
   }
 
   @Get('country/:countryISO2code')
-  async findAll(@Param('countryISO2code') countryISO2code: string) {
+  async findAllByCountry(@Param('countryISO2code') countryISO2code: string) {
     const foundSwiftCodes =
       await this.swiftCodesService.getSwiftCodesByCountryCode(countryISO2code);
     if (!foundSwiftCodes)
