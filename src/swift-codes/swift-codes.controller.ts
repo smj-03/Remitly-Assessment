@@ -15,7 +15,7 @@ export class SwiftCodesController {
     @Param('swiftCode') swiftCode: string,
   ): Promise<BranchSwiftCodeResponseDto | HeadquarterSwiftCodeResponseDto> {
     const foundSwiftCode = await this.swiftCodesService.getSwiftCodeByCode(swiftCode);
-    if (!foundSwiftCode) throw new NotFoundException(`Swift code ${swiftCode} not found.`);
+    if (!foundSwiftCode) throw new NotFoundException(`SWIFT code ${swiftCode} not found.`);
     if (!foundSwiftCode.isHeadquarter)
       return plainToInstance(BranchSwiftCodeResponseDto, foundSwiftCode);
     return plainToInstance(HeadquarterSwiftCodeResponseDto, foundSwiftCode);
@@ -26,7 +26,7 @@ export class SwiftCodesController {
     const foundSwiftCodes =
       await this.swiftCodesService.getSwiftCodesByCountryCode(countryISO2code);
     if (!foundSwiftCodes)
-      throw new NotFoundException(`Swift codes with ${countryISO2code} code not found.`);
+      throw new NotFoundException(`SWIFT codes with ${countryISO2code} code not found.`);
     return plainToInstance(CountrySwiftCodesResponseDto, foundSwiftCodes);
   }
 
@@ -34,7 +34,7 @@ export class SwiftCodesController {
   async add(@Body() swiftCodeDto: BranchSwiftCodeCreateDto): Promise<MessageResponseDto> {
     await this.swiftCodesService.createSwiftCode(swiftCodeDto);
     return plainToInstance(MessageResponseDto, {
-      message: `Successfully added swift code ${swiftCodeDto.swiftCode}.`,
+      message: `Successfully added SWIFT code ${swiftCodeDto.swiftCode}.`,
     });
   }
 
@@ -42,9 +42,9 @@ export class SwiftCodesController {
   async delete(@Param('swiftCode') swiftCode: string) {
     const deleteResult = await this.swiftCodesService.deleteSwiftCode(swiftCode);
     if (deleteResult.deletedCount === 0)
-      throw new NotFoundException(`Swift code ${swiftCode} not found.`);
+      throw new NotFoundException(`SWIFT code ${swiftCode} not found.`);
     return plainToInstance(MessageResponseDto, {
-      message: `Successfully deleted swift code ${swiftCode}.`,
+      message: `Successfully deleted SWIFT code ${swiftCode}.`,
     });
   }
 }

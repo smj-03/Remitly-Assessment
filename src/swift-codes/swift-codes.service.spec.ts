@@ -31,7 +31,7 @@ describe('SwiftCodesService', () => {
   });
 
   describe('getSwiftCodeByCode', () => {
-    it('should return null if swift code is not found', async () => {
+    it('should return null if a swift code is not found', async () => {
       mockSwiftCodeModel.findOne.mockResolvedValue(null);
       const result = await service.getSwiftCodeByCode('ABC123');
       expect(result).toBeNull();

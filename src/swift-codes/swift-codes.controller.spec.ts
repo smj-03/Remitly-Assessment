@@ -33,7 +33,7 @@ describe('SwiftCodesController', () => {
   });
 
   describe('findOne', () => {
-    it('should return swift code', async () => {
+    it('should return a swift code', async () => {
       const mockSwiftCode = {
         swiftCode: 'ABC123',
         countryISO2: 'US',
@@ -47,7 +47,7 @@ describe('SwiftCodesController', () => {
       expect(mockSwiftCodesService.getSwiftCodeByCode).toHaveBeenCalledWith('ABC123');
     });
 
-    it('should throw NotFoundException when swift code not found', async () => {
+    it('should throw NotFoundException when a swift code is not found', async () => {
       mockSwiftCodesService.getSwiftCodeByCode.mockResolvedValue(null);
 
       await expect(controller.findOneByCode('ABC123')).rejects.toThrow(NotFoundException);
@@ -74,7 +74,7 @@ describe('SwiftCodesController', () => {
       expect(mockSwiftCodesService.getSwiftCodesByCountryCode).toHaveBeenCalledWith('US');
     });
 
-    it('should throw NotFoundException when no swift codes found', async () => {
+    it('should throw NotFoundException when no swift codes are found', async () => {
       mockSwiftCodesService.getSwiftCodesByCountryCode.mockResolvedValue(null);
 
       await expect(controller.findAllByCountry('XX')).rejects.toThrow(NotFoundException);
@@ -82,7 +82,7 @@ describe('SwiftCodesController', () => {
   });
 
   describe('add', () => {
-    it('should create swift code and return success message', async () => {
+    it('should create a swift code and return a success message', async () => {
       const dto = {
         swiftCode: 'ABC123',
         countryISO2: 'US',
@@ -91,24 +91,24 @@ describe('SwiftCodesController', () => {
 
       const result = await controller.add(dto as BranchSwiftCodeCreateDto);
 
-      expect(result).toEqual({ message: 'Successfully added swift code ABC123.' });
+      expect(result).toEqual({ message: 'Successfully added SWIFT code ABC123.' });
       expect(mockSwiftCodesService.createSwiftCode).toHaveBeenCalledWith(dto);
     });
   });
 
   describe('delete', () => {
-    it('should delete swift code and return success message', async () => {
+    it('should delete a swift code and return a success message', async () => {
       mockSwiftCodesService.deleteSwiftCode.mockResolvedValue({ deletedCount: 1 });
 
       const result = await controller.delete('ABC123');
 
       expect(result).toEqual({
-        message: 'Successfully deleted swift code ABC123.',
+        message: 'Successfully deleted SWIFT code ABC123.',
       });
       expect(mockSwiftCodesService.deleteSwiftCode).toHaveBeenCalledWith('ABC123');
     });
 
-    it('should throw NotFoundException when swift code not found', async () => {
+    it('should throw NotFoundException when a swift code is not found', async () => {
       mockSwiftCodesService.deleteSwiftCode.mockResolvedValue({ deletedCount: 0 });
 
       await expect(controller.delete('ABC123')).rejects.toThrow(NotFoundException);
