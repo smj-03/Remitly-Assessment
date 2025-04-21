@@ -24,8 +24,8 @@
 
 ## Description
 
-This project was prepared as part of the internship recruitment process at Remitly. It is implemented using TypeScript
-and [NestJS](https://nestjs.com/) framework.
+This project was prepared as part of the internship recruitment process at Remitly. It is implemented using [TypeScript](https://www.typescriptlang.org/),
+[MongoDB](https://www.mongodb.com/) and [NestJS](https://nestjs.com/) framework.
 
 ## Project setup
 
@@ -38,6 +38,9 @@ $ npm install
 ```
 
 ## Compile and run the project
+
+Before running the project, make sure you have a MongoDB instance running on `localhost:27017`, 
+or specify a different database URI as `MONGODB_URI` in the _.env_ file according to [_.env.example_](.env.example).
 
 ```bash
 # development
@@ -66,6 +69,6 @@ $ npm run test:cov
 
 ## Initialization
 
-Upon [initialization](src/initialization/initialization.service.ts), after all modules are configured,
+Upon [_initialization_](src/initialization/initialization.service.ts), after all modules are configured,
 SWIFT codes from the spreadsheet are parsed and inserted into the database.
 When the application is restarted, the database is reset as well.
