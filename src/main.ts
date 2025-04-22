@@ -3,9 +3,12 @@ import { AppModule } from './app.module';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 
 import 'dotenv/config';
+import { useContainer } from 'class-validator';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   app.useGlobalInterceptors(
     new ClassSerializerInterceptor(app.get(Reflector), {

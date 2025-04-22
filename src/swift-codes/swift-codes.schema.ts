@@ -17,7 +17,7 @@ export class SwiftCode extends Document implements IBranchSwiftCode {
   @Prop({ type: Boolean, required: true })
   isHeadquarter: boolean;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, required: true, unique: true })
   swiftCode: string;
 
   @Prop({ type: String, uppercase: true, required: true })

@@ -18,6 +18,7 @@ import { MessageResponseDto } from '../src/swift-codes/dto/message.dto';
 import { HeadquarterSwiftCodeResponseDto } from '../src/swift-codes/dto/headquarter-swift-code.dto';
 import { CountrySwiftCodesResponseDto } from '../src/swift-codes/dto/country-swift-codes.dto';
 import { Reflector } from '@nestjs/core';
+import { useContainer } from 'class-validator';
 
 jest.spyOn(Logger.prototype, 'log').mockImplementation(() => {});
 
@@ -41,6 +42,9 @@ describe('SwiftCodesController Integration', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+
+    useContainer(app.select(SwiftCodesModule), { fallbackOnErrors: true });
+
     app.useGlobalInterceptors(
       new ClassSerializerInterceptor(app.get(Reflector), {
         strategy: 'excludeAll',
@@ -72,7 +76,7 @@ describe('SwiftCodesController Integration', () => {
       countryISO2: 'US',
       countryName: 'United States',
       isHeadquarter: false,
-      swiftCode: 'ABC123XYZ',
+      swiftCode: 'ABCDUS12XYZ',
     };
 
     const response = await request(app.getHttpServer())
@@ -94,7 +98,7 @@ describe('SwiftCodesController Integration', () => {
       countryISO2: 'US',
       countryName: 'United States',
       isHeadquarter: true,
-      swiftCode: 'ABC123XXX',
+      swiftCode: 'ABCDUS12XXX',
     };
 
     const response = await request(app.getHttpServer())
@@ -104,6 +108,30 @@ describe('SwiftCodesController Integration', () => {
 
     const expectedResponse: MessageResponseDto = {
       message: `Successfully added SWIFT code ${payload.swiftCode}.`,
+    };
+
+    expect(response.body).toEqual(expectedResponse);
+  });
+
+  it('should fail to create a new branch swift code if it already exists', async () => {
+    const payload: BranchSwiftCodeCreateDto = {
+      address: '123 Test St',
+      bankName: 'Test Bank',
+      countryISO2: 'US',
+      countryName: 'United States',
+      isHeadquarter: false,
+      swiftCode: 'ABCDUS12XYZ',
+    };
+
+    const response = await request(app.getHttpServer())
+      .post('/v1/swift-codes')
+      .send(payload)
+      .expect(400);
+
+    const expectedResponse = {
+      error: 'Bad Request',
+      message: ['SWIFT code ABCDUS12XYZ already exists'],
+      statusCode: 400,
     };
 
     expect(response.body).toEqual(expectedResponse);
@@ -121,11 +149,13 @@ describe('SwiftCodesController Integration', () => {
       error: 'Bad Request',
       message: [
         'address must be a string',
+        'bankName should not be empty',
         'bankName must be a string',
         'countryISO2 must be a valid ISO31661 Alpha2 code',
+        'countryName should not be empty',
         'countryName must be a string',
         'isHeadquarter must be a boolean value',
-        'swiftCode must be a string',
+        'swiftCode must be a BIC or SWIFT code',
       ],
       statusCode: 400,
     };
@@ -134,7 +164,7 @@ describe('SwiftCodesController Integration', () => {
   });
 
   it('should retrieve a branch swift code', async () => {
-    const swiftCode = 'ABC123XYZ';
+    const swiftCode = 'ABCDUS12XYZ';
 
     const response = await request(app.getHttpServer())
       .get(`/v1/swift-codes/${swiftCode}`)
@@ -153,7 +183,7 @@ describe('SwiftCodesController Integration', () => {
   });
 
   it('should retrieve a headquarter swift code', async () => {
-    const swiftCode = 'ABC123XXX';
+    const swiftCode = 'ABCDUS12XXX';
 
     const response = await request(app.getHttpServer())
       .get(`/v1/swift-codes/${swiftCode}`)
@@ -172,7 +202,7 @@ describe('SwiftCodesController Integration', () => {
           bankName: 'Test Bank',
           countryISO2: 'US',
           isHeadquarter: false,
-          swiftCode: 'ABC123XYZ',
+          swiftCode: 'ABCDUS12XYZ',
         },
       ],
     };
@@ -196,14 +226,14 @@ describe('SwiftCodesController Integration', () => {
           bankName: 'Test Bank',
           countryISO2,
           isHeadquarter: false,
-          swiftCode: 'ABC123XYZ',
+          swiftCode: 'ABCDUS12XYZ',
         },
         {
           address: 'ABC Test St',
           bankName: 'Test Bank',
           countryISO2,
           isHeadquarter: true,
-          swiftCode: 'ABC123XXX',
+          swiftCode: 'ABCDUS12XXX',
         },
       ],
     };
@@ -244,7 +274,7 @@ describe('SwiftCodesController Integration', () => {
   });
 
   it('should delete a swift code', async () => {
-    const swiftCode = 'ABC123XXX';
+    const swiftCode = 'ABCDUS12XYZ';
 
     const response = await request(app.getHttpServer())
       .delete(`/v1/swift-codes/${swiftCode}`)
